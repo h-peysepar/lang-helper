@@ -1,12 +1,10 @@
 import * as React from 'react';
+import AuthForm from '../../components/AuthForm';
 
-export interface SignInProps {
-}
+interface SignInProps {}
 
-export function SignIn (props: SignInProps) {
-  return (
-    <div>
-      
-    </div>
-  );
-}
+const SignIn = (props: SignInProps) => {
+  return <AuthForm mode="sign-in" />;
+};
+
+export default SignIn;
