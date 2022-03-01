@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@1,100;1,200;1,300;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+Arabic&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+// body{background: red;}
+
+@import './layout/index.scss';
+
+@import './pages/auth.scss';
+
+
+@import './components/input.scss';
+@import './components/button.scss';

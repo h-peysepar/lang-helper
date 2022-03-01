@@ -1,0 +1,4 @@
+.general-input {
+     @apply w-full self-stretch px-4  py-3 rounded-lg bg-transparent border border-purple-600 focus:ring-1 ring-purple-600 backdrop-blur-sm outline-none text-center bg-blue-200;
+     background: rgba(255,255,255,.1);
+}

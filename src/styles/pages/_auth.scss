@@ -1,0 +1,11 @@
+.welcome{
+     @apply font-bold;
+     font-size: 3rem;
+     // font-family: 'Noto Sans Arabic', sans-serif;
+}
+.fixCenter{
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+}
