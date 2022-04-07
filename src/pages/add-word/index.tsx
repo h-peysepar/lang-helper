@@ -33,7 +33,7 @@ export default function AddForm (props: AddFormProps) {
           return {
             onChange: (e: any) => {
               if(e.target.value.trim())
-                props.getDefaultDefinition(e.target.value);
+                // props.getDefaultDefinition(e.target.value);
               onChange(e);
             },
             ...methods,

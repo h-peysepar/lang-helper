@@ -1,5 +1,18 @@
-import { model, Schema, Types } from 'mongoose';
-
+import { model, Schema, models } from 'mongoose';
+export type User = {
+     username: string,
+     password: string,
+     setting: {
+          type: {
+               quiz_per_day: number,
+               countof_correct_answers_to_pass_word: number,
+               time_to_remind: {
+                    hour: number
+                    minute: number
+               },
+          },
+     }
+}
 const userSchema = new Schema({
      username: String,
      password: String,
@@ -16,6 +29,6 @@ const userSchema = new Schema({
      }
 })
 
-const userModel = model('users', userSchema)
+const userModel = models.users || model('users', userSchema)
 
 export default userModel

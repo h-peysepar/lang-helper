@@ -11,12 +11,16 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "axios": "^0.26.1",
     "mongoose": "^6.2.5",
     "next": "12.1.0",
+    "next-auth": "^4.3.1",
+    "next-connect": "^0.12.2",
     "react": "17.0.2",
     "react-card-flip": "^1.1.5",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.27.1",
+    "react-query": "^3.34.16",
     "sass": "^1.49.9"
   },
   "devDependencies": {

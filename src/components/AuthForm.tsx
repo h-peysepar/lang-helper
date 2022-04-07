@@ -3,10 +3,13 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from './errorMessage';
 import Label from './Label';
+import {signIn} from 'next-auth/react'
+import axios from 'axios';
 
 function AuthForm(props: {
   mode: 'sign-in' | 'sign-up';
 }) {
+  // console.log(something)
   const router = useRouter();
   const {
     register,
@@ -15,12 +18,16 @@ function AuthForm(props: {
     getValues,
   } = useForm();
   const isSignUp = props.mode === 'sign-up';
-  const onSubmit = handleSubmit((data: any) => {
+  const onSubmit = handleSubmit(async(data: any) => {
     const { confirm_password, ...values } = data;
-    if (props.mode) {
+    if (props.mode === 'sign-in') {
+      const x = await signIn('credentials', {redirect: false, ...values})
+      console.log(x)
       //  props.signup(data, () => setIsSignUp(false))
-    } else {
+    } else if(props.mode === 'sign-up') {
       //  props.login(values, () => router.push('/quiz'))
+      
+      axios.post('/api/auth/sign-up', data).then(res => console.log({res})).catch(err => console.log({err}))
     }
   });
   const validations = {
