@@ -6,6 +6,7 @@ import { IncomingWord } from '../../constants/interfaces';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useState } from 'react';
+import useUserId from '../../hooks/useUserId';
 
 export interface WordsProps {}
 
@@ -29,6 +30,7 @@ export default function Words(props: WordsProps) {
       </>
     );
   };
+  console.log(useUserId())
   const { isLoading, error, data } = useQuery('WORDS_LIST', () =>
     axios.get('/api/word') , {}
   );

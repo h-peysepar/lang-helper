@@ -1,15 +1,12 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from './errorMessage';
 import Label from './Label';
-import {signIn} from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react';
 import axios from 'axios';
 
-function AuthForm(props: {
-  mode: 'sign-in' | 'sign-up';
-}) {
-  // console.log(something)
+function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
   const router = useRouter();
   const {
     register,
@@ -17,17 +14,21 @@ function AuthForm(props: {
     handleSubmit,
     getValues,
   } = useForm();
+  
+  // if (status === 'authenticated') {
+  //   router.push('/');
+  //   return null;
+  // }
   const isSignUp = props.mode === 'sign-up';
-  const onSubmit = handleSubmit(async(data: any) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     const { confirm_password, ...values } = data;
     if (props.mode === 'sign-in') {
-      const x = await signIn('credentials', {redirect: false, ...values})
-      console.log(x)
-      //  props.signup(data, () => setIsSignUp(false))
-    } else if(props.mode === 'sign-up') {
-      //  props.login(values, () => router.push('/quiz'))
-      
-      axios.post('/api/auth/sign-up', data).then(res => console.log({res})).catch(err => console.log({err}))
+      await signIn('credentials', { redirect: false, ...values });
+    } else if (props.mode === 'sign-up') {
+      axios
+        .post('/api/auth/sign-up', data)
+        .then(res => console.log({ res }))
+        .catch(err => console.log({ err }));
     }
   });
   const validations = {
@@ -57,6 +58,8 @@ function AuthForm(props: {
           : getValues('password') === val || "doesn't match password",
     },
   };
+  // console.log(data, '=>',data === undefined)
+  // if(data === undefined || status === 'loading') return null
   return (
     <form
       onSubmit={onSubmit}

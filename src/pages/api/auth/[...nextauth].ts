@@ -9,10 +9,9 @@ export default NextAuth({
       name: 'Credentials',
       credentials: {
         username: { type: 'text' },
-        password: { type: 'password' },
+        _id: { type: 'string' },
       },
       async authorize({username, password: pass}: any, req: any) {
-        //connect to db
         if(!username || !pass){
           throw new Error('username and password is required')
         }
@@ -21,13 +20,25 @@ export default NextAuth({
           username: username,
           password: pass,
         });
-        console.log(user)
         if (!user) {
           throw new Error("user not fount");
         }
-        const { password, ...data } = user;
-        return data;
+        const { username: uname, _id } = user;
+        const tokenData = {username: uname, _id}
+        console.log('=>',tokenData)
+        return tokenData || null
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },}
 });
