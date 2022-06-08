@@ -39,3 +39,4 @@ export default function Setting(props: SettingProps) {
     </form>
   );
 }
+Setting.private = true;

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from './errorMessage';
 import Label from './Label';
-import { signIn, useSession } from 'next-auth/react';
 import axios from 'axios';
 
 function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
@@ -15,15 +14,11 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
     getValues,
   } = useForm();
   
-  // if (status === 'authenticated') {
-  //   router.push('/');
-  //   return null;
-  // }
   const isSignUp = props.mode === 'sign-up';
   const onSubmit = handleSubmit(async (data: any) => {
     const { confirm_password, ...values } = data;
     if (props.mode === 'sign-in') {
-      await signIn('credentials', { redirect: false, ...values });
+      //login
     } else if (props.mode === 'sign-up') {
       axios
         .post('/api/auth/sign-up', data)
