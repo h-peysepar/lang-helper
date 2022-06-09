@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import User, { User as UserType } from '../../../models/user';
 import { connectDb } from '../../../utils/withDb';
-
+// [...nextauth]
 export default NextAuth({
   providers: [
     CredentialsProvider({

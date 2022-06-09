@@ -3,7 +3,6 @@ import User, { User as UserType } from '../../../../models/user';
 import { connectDb } from '../../../../utils/withDb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
-     console.log(req.body)
      const { username, password, confirm_password, ...others } = req.body || {}
      if (!Object.keys(others))
      return res.status(422).json({hasError: true})

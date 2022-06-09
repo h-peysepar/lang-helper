@@ -39,3 +39,4 @@ export default function Quiz (props: QuizProps) {
 </div>
   );
 }
+Quiz.private = true;
