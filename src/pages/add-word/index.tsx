@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from 'react-query';
 import ErrorMessage from "../../components/errorMessage";
 import Label from "../../components/Label";
+import { axios } from '../../utils/api';
 export interface AddFormProps {
   getDefaultDefinition: Function 
   defaultDefinition: string
@@ -15,8 +17,8 @@ export default function AddForm (props: AddFormProps) {
     register,
     setValue,
   } = useForm();
-
-  const onSubmit = (data: object) => props.addWord(data);
+  const {mutate} = useMutation(data => axios.post('/words', data))
+  const onSubmit = (data: object) => mutate(data);
   useEffect(()=>{
     setValue('defaultDefinition', props.defaultDefinition)
   },[props.defaultDefinition])

@@ -6,12 +6,13 @@ import '../styles/main.scss';
 import Loading from '../components/Loading';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { getToken } from '../utils/helpers';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState();
   if (typeof window !== 'undefined') {
-    const hasToken = localStorage.getItem('auth');
+    const hasToken = getToken();
     if (Component.private) {
       if (!hasToken) {
         router.replace('/sign-in');

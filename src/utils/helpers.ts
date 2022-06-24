@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 export function getDefinition(word: string) {
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&hl=en-US&dt=t&dt=bd&dj=1&q=${word}`;
   return axios
@@ -11,3 +12,10 @@ export function getDefinition(word: string) {
 //   err. = code;
 //   return err
 // }
+export const getToken = () => Cookies.get('auth');
+export const clearToken = () => Cookies.remove('auth');
+export const setToken = token => {
+  Cookies.set('auth', token);
+  Cookies.set('user_id', jwt_decode(token)._id);
+  
+};

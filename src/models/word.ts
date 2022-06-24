@@ -1,4 +1,4 @@
-import { model, Schema, Types } from 'mongoose';
+import mongoose, { model, Schema, Types } from 'mongoose';
 
 const wordSchema = new Schema({
      word: String,
@@ -10,7 +10,4 @@ const wordSchema = new Schema({
      daily_updates: {type: Number, default: 0},
      user_id: Types.ObjectId,
 })
-
-const wordModel = model('words', wordSchema)
-
-export default wordModel
+export default mongoose.models.words || model('words', wordSchema);

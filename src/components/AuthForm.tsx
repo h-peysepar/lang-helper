@@ -5,6 +5,7 @@ import ErrorMessage from './errorMessage';
 import Label from './Label';
 import axios from 'axios';
 import { useMutation } from 'react-query';
+import { setToken } from '../utils/helpers';
 
 function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
   const router = useRouter();
@@ -19,7 +20,7 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
   // @ts-ignore
   const fetcher = data => axios.post('/api/auth/login', data);
   const onSuccess = x => {
-    localStorage.setItem('auth', x?.data?.data?.token);
+    setToken(x?.data?.data?.token);
     router.push('/quiz');
   };
   const { mutate, data } = useMutation(fetcher, {
