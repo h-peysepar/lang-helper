@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { model, Schema, Types } from 'mongoose';
 
 const quizSchema = new Schema({
@@ -10,6 +11,6 @@ const quizSchema = new Schema({
      }],
 })
 
-const Quiz = model('quiz', quizSchema)
+const Quiz = mongoose.models.quiz || model('quiz', quizSchema)
 
 export default Quiz

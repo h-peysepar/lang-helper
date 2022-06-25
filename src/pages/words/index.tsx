@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { axios } from '../../utils/api';
 
-// new Promise((res, rej) =>axios.get('/words').then(({data}) => res(data)))
+
 const fetcher = () =>
   new Promise((res, rej) =>
     axios.get('/words').then(({ data: { data } }) => res(data))

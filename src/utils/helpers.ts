@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { axios as encancedAxios } from './api';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 export function getDefinition(word: string) {
@@ -17,5 +18,14 @@ export const clearToken = () => Cookies.remove('auth');
 export const setToken = token => {
   Cookies.set('auth', token);
   Cookies.set('user_id', jwt_decode(token)._id);
-  
 };
+export const fetcher = (url, opts) => () =>
+  new Promise((res, rej) =>
+    encancedAxios.get(url, opts).then(({ data }) => {
+      const {data: pureData, ...others} = data
+      if(data && !Object.keys(others).length){
+        return res(pureData)
+      }
+      res(data)
+    })
+  );
