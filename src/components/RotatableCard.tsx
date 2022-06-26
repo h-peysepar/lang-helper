@@ -1,19 +1,39 @@
-import { useState } from 'react'
-import ReactCardFlip from 'react-card-flip'
+import { useState } from 'react';
+import Styled from './Styled';
 
-function RotatableCard(props: { className?: string, word: string, definition?: string, ActionComponent: Function }) {
-     const [state, setState] = useState(false)
-     const rotateCard = () => setState(prev => !prev)
-     return (
-          <div className={`${props.className} bg-gray-50 mx-3 my-2 rounded-2xl items-center flex p-3 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60`}>
-               <ReactCardFlip containerClassName={'self-stretch w-40 font-medium'} isFlipped={state} flipDirection="vertical" >
-                    <div className='h-full flex items-center ml-2' onClick={rotateCard}>{props.word}</div>
-                    <div className='h-full flex items-center ml-2' onClick={rotateCard}>{props.definition}</div>
-               </ReactCardFlip>
-               <span className='ml-auto inline-flex items-center'><props.ActionComponent/></span>
-          </div>
-     )
+function RotatableCard(props: {
+  className?: string;
+  word: string;
+  definition?: string;
+  ActionComponent: Function;
+}) {
+  const [state, setState] = useState(false);
+  const rotateCard = () => setState(prev => !prev);
+  return (
+    <div className={`${props.className} flex px-4 h-14 my-2`}>
+      <CardSection onClick={rotateCard} className={`flip-container flex-1 rounded-l-2xl ${state ? 'rotated': ''}`}>
+        <CardLayer className='front'>{props.word}</CardLayer>
+        <CardLayer className='back'>{props.definition}</CardLayer>
+      </CardSection>
+      <CardSection className='inline-flex items-center rounded-r-2xl pr-5'>
+        <props.ActionComponent />
+      </CardSection>
+    </div>
+  );
 }
 
-
-export default RotatableCard
+export default RotatableCard;
+const CardSection = Styled('div')`
+     h-full
+     bg-gray-50
+     h-full
+     bg-opacity-60
+`
+const CardLayer = Styled('div')`
+     absolute
+     h-full
+     w-full
+     flex
+     items-center
+     left-5
+`

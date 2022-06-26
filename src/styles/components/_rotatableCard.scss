@@ -19,3 +19,20 @@
 word {
      margin-right: auto;
 }
+.flip-container {
+     transform-style: preserve-3d;
+     transition: all 0.8s ease;
+}
+
+.flip-container.rotated {
+     transform: rotatex(180deg);
+}
+
+.front {
+     backface-visibility: hidden;
+}
+
+.back {
+     backface-visibility: hidden;
+     transform: rotateX(180deg);
+}

@@ -1,18 +1,18 @@
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import { ElementType, FC, forwardRef, HTMLAttributes, memo } from 'react';
+import { ElementType, FC, forwardRef, memo, ReactNode, ReactText } from 'react';
 
 type CpProps = {
-  className: string,
-  props: object
+  children: ReactNode | ReactText;
+  className: string;
+  others?: object;
 };
 
 const Styled = function (Element: ElementType) {
-  return function ([styles]: TemplateStringsArray): FC {
+  return function ([styles]: TemplateStringsArray): FC<CpProps> {
     return memo(
-      forwardRef(function ({ children, className, ...props }: any , ref) {
+      forwardRef(function ({ children, className, ...props }, ref) {
         const classes = `${styles?.split('\n').join(' ').trim()} ${className}`;
-        if(!children){
-          return <Element className={classes} {...{ ...props, ref }} />
+        if (!children) {
+          return <Element className={classes} {...{ ...props, ref }} />;
         }
         return (
           <Element className={classes} {...{ ...props, ref }}>
