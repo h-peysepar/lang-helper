@@ -5,8 +5,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import '../styles/main.scss';
 import Loading from '../components/Loading';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { getToken } from '../utils/helpers';
+import Styled from '../components/Styled';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
@@ -28,16 +29,39 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
   return (
     <QueryClientProvider client={new QueryClient()}>
-      <div className='mx-auto bg h-full flex flex-col sm:w-[640px] pt-3 px-2 sm:px-5 relative'>
-        <div className='main flex-1 overflow-y-auto'>
+      <App>
+        <Content>
           <Component {...pageProps} />
-        </div>
-        <div className='menubar h-16 flex items-center justify-center bg'>
+        </Content>
+        <MenuContainer className='menubar bg'>
           <Menubar />
-        </div>
-      </div>
+        </MenuContainer>
+      </App>
     </QueryClientProvider>
   );
 }
 
 export default MyApp;
+const App = Styled('div')`
+  mx-auto 
+  bg
+  h-full
+  flex
+  flex-col
+  sm:w-[440px]
+  pt-3
+  px-2
+  sm:px-5
+  relative
+`;
+const MenuContainer = Styled('div')` 
+  h-16 
+  flex 
+  items-center 
+  justify-center
+`;
+const Content = Styled('div')`
+  main
+  flex-1
+  overflow-y-auto
+`

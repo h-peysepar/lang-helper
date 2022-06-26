@@ -6,6 +6,8 @@ import Label from './Label';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 import { setToken } from '../utils/helpers';
+import { Input } from './Input';
+import Button from './Button';
 
 function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
   const router = useRouter();
@@ -78,17 +80,15 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
         <div className='flex flex-col gap-1 justify-center items-center w-10/12'>
           <div className='w-full mb-2'>
             <Label>username</Label>
-            <input
+            <Input
               {...register('username', validations.username)}
-              className='general-input'
             />
             <ErrorMessage>{errors.username?.message}</ErrorMessage>
           </div>
           <div className='w-full mb-2'>
             <Label>password</Label>
-            <input
+            <Input
               {...register('password', validations.password)}
-              className='general-input'
             />
             <ErrorMessage>{errors.password?.message}</ErrorMessage>
           </div>
@@ -99,9 +99,8 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
           >
             {!isSignUp && <div className='absolute w-full h-full z-10'></div>}
             <Label>confirm password</Label>
-            <input
+            <Input
               {...register('confirm_password', validations.confirm_password)}
-              className='general-input'
             />
             <ErrorMessage>{errors.confirm_password?.message}</ErrorMessage>
           </div>
@@ -111,7 +110,7 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
           >
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </a>
-          <button className='button'>Submit</button>
+          <Button>Submit</Button>
         </div>
       </div>
     </form>

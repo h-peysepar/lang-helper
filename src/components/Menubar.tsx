@@ -1,10 +1,10 @@
 import React from 'react'
-import Add from '@material-ui/icons/AddCircleOutlineOutlined'
-import FontDownload from '@material-ui/icons/TranslateOutlined'
-import Help from '@material-ui/icons/HelpOutlineOutlined'
+import Add from '@mui/icons-material/AddCircleOutlineOutlined'
+import FontDownload from '@mui/icons-material/TranslateOutlined'
+import Help from '@mui/icons-material/HelpOutlineOutlined'
 import NavLink from 'next/link'
-import Settings from '@material-ui/icons/Settings'
-import IconButton from '@material-ui/core/IconButton'
+import Settings from '@mui/icons-material/Settings'
+import IconButton from '@mui/material/IconButton'
 function Menubar() {
      const linkClass = 'text-gray-200 p-4 box-content'
      return (

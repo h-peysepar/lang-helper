@@ -1,7 +1,7 @@
 import * as React from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import Clear from '@material-ui/icons/Clear';
-import Done from '@material-ui/icons/Done';
+import IconButton from '@mui/material/IconButton';
+import Clear from '@mui/icons-material/Clear';
+import Done from '@mui/icons-material/Done';
 import RotatableCard from '../../components/RotatableCard';
 import { IncomingWord } from '../../constants/interfaces';
 import { useQuery } from 'react-query';

@@ -1,12 +1,11 @@
 import * as React from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import IconButton from '@mui/material/IconButton';
+import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import RotatableCard from '../../components/RotatableCard';
 import { IncomingWord } from '../../constants/interfaces';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { axios } from '../../utils/api';
-
 
 const fetcher = () =>
   new Promise((res, rej) =>
@@ -34,7 +33,9 @@ function Words(props: WordsProps) {
       </>
     );
   };
-  const { isLoading, error, data } = useQuery('WORDS_LIST', fetcher, {});
+  const { isLoading, error, data } = useQuery('WORDS_LIST', fetcher, {
+    refetchOnWindowFocus: false,
+  });
   return (
     <div className=''>
       {data?.map((item: IncomingWord) => (

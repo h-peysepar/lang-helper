@@ -22,10 +22,10 @@ export const setToken = token => {
 export const fetcher = (url, opts) => () =>
   new Promise((res, rej) =>
     encancedAxios.get(url, opts).then(({ data }) => {
-      const {data: pureData, ...others} = data
-      if(data && !Object.keys(others).length){
-        return res(pureData)
+      const { data: pureData, ...others } = data;
+      if (data && !Object.keys(others).length) {
+        return res(pureData);
       }
-      res(data)
+      res(data);
     })
   );
