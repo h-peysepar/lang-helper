@@ -10,4 +10,5 @@ const wordSchema = new Schema({
      daily_updates: {type: Number, default: 0},
      user_id: Types.ObjectId,
 })
-export default mongoose.models.words || model('words', wordSchema);
+const Word = mongoose.models.words || model('words', wordSchema);
+export default Word;

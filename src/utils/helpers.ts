@@ -14,7 +14,10 @@ export function getDefinition(word: string) {
 //   return err
 // }
 export const getToken = () => Cookies.get('auth');
-export const clearToken = () => Cookies.remove('auth');
+export const clearToken = () => {
+  Cookies.remove('auth');
+  Cookies.remove('uesr_id');
+};
 export const setToken = token => {
   Cookies.set('auth', token);
   Cookies.set('user_id', jwt_decode(token)._id);

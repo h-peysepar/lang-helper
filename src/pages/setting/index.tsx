@@ -4,6 +4,7 @@ import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import Label from '../../components/Label';
 import Styled from '../../components/Styled';
+import { clearToken } from '../../utils/helpers';
 export interface SettingProps {}
 
 export default function Setting(props: SettingProps) {
@@ -35,7 +36,7 @@ export default function Setting(props: SettingProps) {
       <div className='mx-12'>
         <LogoutButton
           onClick={() => {
-            localStorage.clear();
+            clearToken();
             window.location.reload();
           }}
         >
