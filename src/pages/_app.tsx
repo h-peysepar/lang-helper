@@ -9,7 +9,13 @@ import { useState } from 'react';
 import { getToken } from '../utils/helpers';
 import Styled from '../components/Styled';
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    },
+  },
+})
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState();

@@ -1,16 +1,32 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQuery } from 'react-query';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import Label from '../../components/Label';
 import Styled from '../../components/Styled';
-import { clearToken } from '../../utils/helpers';
+import { axios } from '../../utils/api';
+import { clearToken, fetcher } from '../../utils/helpers';
 export interface SettingProps {}
 
 export default function Setting(props: SettingProps) {
-  const { handleSubmit, register, setValue } = useForm();
+  const { handleSubmit, register, reset } = useForm();
+  const { data, refetch } = useQuery('SETTING', fetcher('/setting', {}));
+  const { mutate, data: updatedData } = useMutation(data =>
+    axios.patch('/setting', data)
+  );
+  useEffect(() => {
+    data && reset(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (updatedData) {
+      refetch();
+    }
+  }, [updatedData]);
+
   const onSubmit = (data: any) => {
-    console.log(data);
+    mutate(data);
   };
   return (
     <form className='p-2' onSubmit={handleSubmit(onSubmit)}>
