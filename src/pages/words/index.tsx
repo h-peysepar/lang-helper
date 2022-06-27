@@ -1,11 +1,11 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import DeleteOutline from '@mui/icons-material/DeleteOutline';
+// import IconButton from '@mui/material/IconButton';
+// import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import RotatableCard from '../../components/RotatableCard';
 import { IncomingWord } from '../../constants/interfaces';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { axios } from '../../utils/api';
+import Styled from '../../components/Styled';
 
 const fetcher = () =>
   new Promise((res, rej) =>
@@ -25,11 +25,13 @@ function Words(props: WordsProps) {
 
     return (
       <>
-        <IconButton>
+        {/* <IconButton>
           <DeleteOutline />
-        </IconButton>
-        <span className='mx-3'>{actionProps.wrongAnsweres}</span>
-        <span className='mx-3'>{actionProps.rightAnswers}</span>
+        </IconButton> */}
+        {/* {console.log(actionProps.wrongAnsweres)}
+        {console.log(actionProps.rightAnswers)} */}
+        <Statistics className='text-red-600'>{actionProps.wrongAnsweres}</Statistics>
+        <Statistics className='text-green-600'>{actionProps.rightAnswers}</Statistics>
       </>
     );
   };
@@ -57,3 +59,8 @@ function Words(props: WordsProps) {
 }
 Words.private = true;
 export default Words;
+const Statistics = Styled('div')`
+  mx-3
+  w-5
+  text-center
+`
