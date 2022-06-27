@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { getToken } from '../utils/helpers';
 import Styled from '../components/Styled';
 
+export const queryClient = new QueryClient()
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState();
@@ -28,7 +29,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }
 
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <App>
         <Content>
           <Component {...pageProps} />
