@@ -11,7 +11,12 @@ function RotatableCard(props: {
   const rotateCard = () => setState(prev => !prev);
   return (
     <div className={`${props.className} flex px-4 h-14 my-2`}>
-      <CardSection onClick={rotateCard} className={`flip-container flex-1 rounded-l-2xl ${state ? 'rotated': ''}`}>
+      <CardSection
+        onClick={rotateCard}
+        className={`flip-container flex-1 rounded-l-2xl ${
+          state ? 'rotated' : ''
+        }`}
+      >
         <CardLayer className='front'>{props.word}</CardLayer>
         <CardLayer className='back'>{props.definition}</CardLayer>
       </CardSection>
@@ -28,12 +33,13 @@ export const CardSection = Styled('div')`
      bg-gray-50
      h-full
      bg-opacity-60
-`
+`;
 const CardLayer = Styled('div')`
-     absolute
-     h-full
-     w-full
-     flex
-     items-center
-     left-5
-`
+    cursor-pointer    
+    absolute
+    h-full
+    w-full
+    flex
+    items-center
+    left-5
+`;
