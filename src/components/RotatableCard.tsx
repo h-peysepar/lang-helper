@@ -23,7 +23,7 @@ function RotatableCard(props: {
 }
 
 export default RotatableCard;
-const CardSection = Styled('div')`
+export const CardSection = Styled('div')`
      h-full
      bg-gray-50
      h-full

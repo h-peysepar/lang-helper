@@ -12,7 +12,6 @@ interface Props {
   loading: boolean
 }
 function Protect(props: Props) {
-  console.log(props.authenticated?.success);
   useEffect(() => {
     props.checkAuth();
   }, []);
@@ -25,8 +24,6 @@ function Protect(props: Props) {
   }, [props]);
   if(props.loading) return <Loading/>
   if (props.authenticated?.success || props.hasError) return <>{props.children}</>;
-  // return <h1>ghjg</h1>;
-  // return <>{`${JSON.stringify(props)}`}</>;
   return <Loading/>;
 }
 const mapStateToProps = (state: any) => ({

@@ -1,53 +1,47 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Clear from '@mui/icons-material/Clear';
-import Done from '@mui/icons-material/Done';
-import RotatableCard from '../../components/RotatableCard';
-import { IncomingWord } from '../../constants/interfaces';
+// import { IncomingWord } from '../../constants/interfaces';
 import { useMutation, useQuery } from 'react-query';
-import { fetcher } from '../../utils/helpers';
-import { queryClient } from '../_app';
+import { EnNumber, fetcher } from '../../utils/helpers';
 import { axios } from '../../utils/api';
-
+import Button from '../../components/Button';
+import Styled from '../../components/Styled';
+import { useRouter } from 'next/router';
 export interface QuizProps {}
 
-export default function Quiz(props: QuizProps) {
-  const { mutate } = useMutation(({payload, state}) => axios.patch(`/quiz/answer?answer=${state}` , payload));
-  const ActionComponent = ({ id }: { id: string }) => {
-    const setWordAnswer = (state: boolean) => () => {
-      const payload = {
-        quiz_id: data?._id,
-        word_id: id,
-      };
-      console.log('hrere')
-       mutate({payload, state})
-    };
-    return (
-      <>
-        <IconButton onClick={setWordAnswer('false')}>
-          <Clear />
-        </IconButton>
-        <IconButton onClick={setWordAnswer('true')}>
-          <Done />
-        </IconButton>
-      </>
-    );
-  };
-  let { data } = useQuery(
-    'QUIZ',
-    fetcher('quiz', { params: { date: new Date().toISOString().slice(0, 10) } })
+export default function QuizList(props: QuizProps) {
+  const { data: quizList, refetch } = useQuery(
+    'QUIZES_LIST',
+    fetcher('/quiz', {})
   );
+  const { mutate } = useMutation(() =>
+    axios.post('/quiz', { date: new Date().toISOString().slice(0, 10) })
+  );
+  const router = useRouter()
   return (
-    <div className='max-h-full overflow-y-auto'>
-      {data?.words?.map((word: IncomingWord) => (
-        <RotatableCard
-          key={word._id}
-          ActionComponent={() => <ActionComponent id={word._id} />}
-          word={word.word}
-          definition={word.definition}
-        />
+    <div className='relative'>
+      <Button onClick={() => mutate(null, { onSuccess: refetch })}>
+        Generate Quiz
+      </Button>
+      {quizList?.map(quiz => (
+        <Card onClick={() => router.push(`/quiz/${quiz._id}`)}>
+          {EnNumber(
+            new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
+          )}
+        </Card>
       ))}
     </div>
   );
 }
-Quiz.private = true;
+QuizList.private = true;
+const Card = Styled('div')`
+  flex
+  px-4
+  h-14
+  my-2
+  bg-gray-50
+  bg-opacity-60
+  items-center
+  rounded-2xl
+  tracking-wider
+  cursor-pointer
+`;
