@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Loading() {
+function Loading({staticc}) {
   return (
-    <span className='fixCenter'>
+    <span className={!staticc ? 'fixCenter': 'justify-center w-full flex'}>
       <svg
         className='animate-spin m-1 h-5 w-5 text-white'
         xmlns='http://www.w3.org/2000/svg'
@@ -15,7 +15,7 @@ function Loading() {
           cy='12'
           r='10'
           stroke='currentColor'
-          stroke-width='4'
+          strokeWidth='4'
         ></circle>
         <path
           className='opacity-75'

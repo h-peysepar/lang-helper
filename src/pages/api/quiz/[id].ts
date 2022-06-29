@@ -33,7 +33,7 @@ router
       const targetWord = quiz.words.find(({ word }: any) => word == word_id);
       targetWord.answer = answer;
       word[key]++;
-      if (quiz.words.every(i => i.answer === null)) {
+      if (quiz.words.every(i => i.answer !== null)) {
         quiz.is_done = true;
       }
       const [, savedWord] = await Promise.all([quiz.save(), word.save()]);

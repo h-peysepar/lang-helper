@@ -6,6 +6,7 @@ import { IncomingWord } from '../../constants/interfaces';
 import { useQuery } from 'react-query';
 import { axios } from '../../utils/api';
 import Styled from '../../components/Styled';
+import Loading from '../../components/Loading';
 
 const fetcher = () =>
   new Promise((res, rej) =>
@@ -38,6 +39,9 @@ function Words(props: WordsProps) {
   const { isLoading, error, data } = useQuery('WORDS_LIST', fetcher, {
     refetchOnWindowFocus: false,
   });
+  if(isLoading){
+    return <Loading />
+  }
   return (
     <div className=''>
       {data?.map((item: IncomingWord) => (

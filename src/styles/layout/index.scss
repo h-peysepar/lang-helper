@@ -3,16 +3,35 @@ html,
 #root {
      height: 100%;
      overflow: hidden;
-     font-family: "Fira Sans", sans-serif;
+     font-family: 'Fira Sans', sans-serif;
 }
-.bg, body {
+.bg,
+body {
      background: #292c31;
 }
 .menubar .active {
      background: linear-gradient(180deg, #ffffff40, transparent);
      border-radius: 333px 333px 0 0;
 }
-#__next{
+#__next {
      // max-width: 640px;
      height: 100%;
+}
+$scrollbar-width: #ebebeb57;
+* {
+     &::-webkit-scrollbar {
+          position: absolute;
+          width: 0.3rem;
+          margin-left: 0.3rem;
+     }
+     &::-webkit-scrollbar-track {
+          background: transparent;
+     }
+     &::-webkit-scrollbar-thumb {
+          background: $scrollbar-width;
+          border-radius: 3rem;
+     }
+     &::-webkit-scrollbar-thumb:hover {
+          background: darken($scrollbar-width, 4);
+     }
 }

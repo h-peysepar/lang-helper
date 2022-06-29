@@ -11,7 +11,7 @@ router
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { user_id } = req.cookies;
     const { max } = await getSetting(user_id);
-    const {date} = req.body
+    const { date } = req.body;
     res.json(await generateQuiz({ user_id, max, date }));
   })
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,7 +19,17 @@ router
 
     try {
       const quizes = await Quiz.find({ user_id });
-      res.json({ data: quizes });
+
+      res.json({
+        data: quizes.map(q => {
+          const all = q.words.length;
+          const trues = q.words.filter(w => w.answer === true).length;
+          return {
+            ...q._doc,
+            statistics: [(all - trues) / all, trues / all],
+          };
+        }),
+      });
       // Quiz.find({ user_id }).populate('words.word', 'word definition');
     } catch (error) {
       console.log(error);
