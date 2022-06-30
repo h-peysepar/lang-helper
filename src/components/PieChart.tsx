@@ -1,21 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 interface Props {
   data: [number, number];
 }
-
+const defaultColors = ['rgb(211, 47, 47)', 'rgb(56, 142, 60)'];
 function PieChart(props: Props) {
-  const { data } = props;
+  const { data, colors } = useMemo(() => {
+    if (props.data?.every(i => i !== 1)) {
+      return {
+        colors: defaultColors,
+        data: props.data,
+      };
+    } else {
+      const index = props.data.indexOf(1);
+      return {
+        colors: [defaultColors[index], defaultColors[index]],
+        data: [0.5, 0.5],
+      };
+    }
+  }, [props.data]);
 
-  const colors = ['rgb(211, 47, 47)', 'rgb(56, 142, 60)'];
-
-  // Just change these top three variables to generate and SVG pie chart
-  // const colors = ['red', 'green'];
   const radius = 15;
 
   let percentageSum = 0;
   let startXY = { x: radius, y: 0 };
   const slices = data.map((percent, i) => {
+    console.log(percent);
     percentageSum += percent;
     const angle = Math.PI * 2 * percentageSum;
 
