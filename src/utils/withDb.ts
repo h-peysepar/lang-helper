@@ -2,24 +2,34 @@
 import { connect, connection } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+const voidFn = () => {};
+export async function connectDb({
+  onSuccess = voidFn,
+  onError = voidFn,
+}: {
+  onSuccess?: Function;
+  onError?: Function;
+}) {
+  const db_url =
+    process.env.NODE_ENV !== 'production'
+      ? process.env.MONGO_LOCAL
+      : process.env.MONGO_URI;
 
-export async function connectDb(callback = () => {}) {
-  const db_url = process.env.NODE_ENV !== 'production' ? process.env.MONGO_LOCAL : process.env.MONGO_URI
-  
-  if(connection.readyState === 1){
-    return console.log('db: already connected')
+  if (connection.readyState === 1) {
+    return console.log('db: already connected');
   }
   try {
     await connect(db_url);
-    callback();
+    onSuccess && onSuccess();
   } catch (err: any) {
-    console.log('oh no: ', err.message);
+    console.log('DBERROR:', err.message);
+    onError && onError(err)
   }
 }
 
 export default function withDb(func: Function) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
-    await connectDb();
+    await connectDb({onError: () => res.json({errorMessage: 'unexpected thing occured!'})});
     func(req, res);
   };
 }
