@@ -1,6 +1,6 @@
 import Styled from './Styled';
 
-export const Input = Styled('input')`
+export const Input = Styled<HTMLInputElement>('input')`
   w-full
   self-stretch
   px-4  

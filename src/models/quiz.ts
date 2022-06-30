@@ -1,5 +1,16 @@
 import mongoose from 'mongoose';
 import { model, Schema, Types } from 'mongoose';
+interface QuizWord {
+  word: Types.ObjectId;
+  answer: boolean;
+}
+export interface QuizInterface {
+  user_id: Types.ObjectId;
+  date: Date;
+  is_done: boolean;
+  auto_generated: boolean;
+  words: QuizWord[];
+}
 
 const quizSchema = new Schema({
   user_id: { ref: 'user', type: Types.ObjectId },
@@ -14,6 +25,6 @@ const quizSchema = new Schema({
   ],
 });
 
-const Quiz = mongoose.models.quiz || model('quiz', quizSchema);
+const Quiz = mongoose.models.quiz || model<QuizInterface>('quiz', quizSchema);
 
 export default Quiz;

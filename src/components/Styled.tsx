@@ -1,16 +1,22 @@
-import { ElementType, FC, forwardRef, memo, ReactNode, ReactText } from 'react';
+import {
+  ElementType,
+  forwardRef,
+  HTMLAttributes,
+  memo,
+  ReactNode,
+  ReactText,
+} from 'react';
 
-type CpProps = {
-  children?: ReactNode | ReactText;
-  className?: string;
-  others?: object;
-};
-
-const Styled = function (Element: ElementType) {
-  return function ([styles]: TemplateStringsArray): FC<CpProps> {
-    return memo(
-      forwardRef(function ({ children, className, ...props }, ref) {
-        const classes = `${styles?.split('\n').join(' ').trim()} ${className || ''}`;
+const Styled = function <T = HTMLElement>(Element: ElementType) {
+  return function ([styles]: TemplateStringsArray) {
+    const Styled = memo(
+      forwardRef(function (
+        { children, className, ...props }: HTMLAttributes<T>,
+        ref
+      ) {
+        const classes = `${styles?.split('\n').join(' ').trim()} ${
+          className || ''
+        }`;
         if (children === undefined) {
           return <Element className={classes} {...{ ...props, ref }} />;
         }
@@ -21,6 +27,8 @@ const Styled = function (Element: ElementType) {
         );
       })
     );
+    Styled.displayName = `Styled${Element}`
+    return Styled;
   };
 };
 export default Styled;

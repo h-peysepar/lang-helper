@@ -8,11 +8,14 @@ import Styled from '../../components/Styled';
 import { axios } from '../../utils/api';
 import { clearToken, fetcher } from '../../utils/helpers';
 export interface SettingProps {}
-
+interface TSetting {
+  quiz_per_day: number;
+  countof_correct_answers_to_pass_word: number;
+}
 export default function Setting(props: SettingProps) {
-  const { handleSubmit, register, reset } = useForm();
-  const { data, refetch } = useQuery('SETTING', fetcher('/setting', {}));
-  const { mutate, data: updatedData } = useMutation(data =>
+  const { handleSubmit, register, reset } = useForm<TSetting>();
+  const { data, refetch } = useQuery('SETTING', fetcher<TSetting>('/setting', {}));
+  const { mutate, data: updatedData } = useMutation((data) =>
     axios.patch('/setting', data)
   );
   useEffect(() => {

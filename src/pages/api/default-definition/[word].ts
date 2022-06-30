@@ -5,5 +5,5 @@ export default function hanlder(req: NextApiRequest, res: NextApiResponse) {
   const { word } = req.query;
   getDefinition(word)
     .then(def => res.json({ data: def }))
-    .catch(err => console.log(error));
+    .catch(err => console.log(err));
 }

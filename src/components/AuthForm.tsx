@@ -21,6 +21,7 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
   const isSignUp = props.mode === 'sign-up';
   // @ts-ignore
   const fetcher = data => axios.post('/api/auth/login', data);
+  // @ts-ignore
   const onSuccess = x => {
     setToken(x?.data?.data?.token);
     router.push('/quiz');
@@ -67,8 +68,6 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
           : getValues('password') === val || "doesn't match password",
     },
   };
-  // console.log(data, '=>',data === undefined)
-  // if(data === undefined || status === 'loading') return null
   return (
     <form
       onSubmit={onSubmit}
@@ -80,16 +79,12 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
         <div className='flex flex-col gap-1 justify-center items-center w-10/12'>
           <div className='w-full mb-2'>
             <Label>username</Label>
-            <Input
-              {...register('username', validations.username)}
-            />
+            <Input {...register('username', validations.username)} />
             <ErrorMessage>{errors.username?.message}</ErrorMessage>
           </div>
           <div className='w-full mb-2'>
             <Label>password</Label>
-            <Input
-              {...register('password', validations.password)}
-            />
+            <Input {...register('password', validations.password)} />
             <ErrorMessage>{errors.password?.message}</ErrorMessage>
           </div>
           <div

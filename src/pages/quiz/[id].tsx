@@ -9,24 +9,44 @@ import { axios } from '../../utils/api';
 import { fetcher } from '../../utils/helpers';
 
 interface Props {}
-
+interface Word {
+  word: {
+    word: string;
+    definition: string;
+    _id: string;
+  };
+  answer: boolean;
+}
+interface Response {
+  words: Word[];
+}
+interface TPayload {
+  word_id: string;
+  answer: boolean;
+}
 function Quiz(props: Props) {
   const {} = props;
   const {
     query: { id: quizId },
   } = useRouter();
-  const { data, isLoading } = useQuery(
+  const { data, isLoading } = useQuery<Response>(
     [quizId, 'QUIZ'],
-    fetcher(`/quiz/${quizId}`, { enabled: !!quizId })
+    fetcher<Response>(`/quiz/${quizId}`, { enabled: !!quizId })
   );
 
   if (isLoading) {
     return <Loading />;
   }
-  const ActionComponent = ({ id, answer: initAnswer }: { id: string }) => {
+  const ActionComponent = ({
+    id,
+    answer: initAnswer,
+  }: {
+    id: string;
+    answer: boolean;
+  }) => {
     const [answer, setAnswer] = useState<boolean | null>(initAnswer);
-    const { mutate, isLoading: answerLoading } = useMutation(payload =>
-      axios.patch(`/quiz/${quizId}`, payload)
+    const { mutate, isLoading: answerLoading } = useMutation<{}, {}, TPayload>(
+      payload => axios.patch(`/quiz/${quizId}`, payload)
     );
     const setWordAnswer = (state: boolean) => () => {
       dirtyButton.current = state;
@@ -36,7 +56,7 @@ function Quiz(props: Props) {
       };
       mutate(payload, { onSuccess: () => setAnswer(state) });
     };
-    const dirtyButton = useRef();
+    const dirtyButton = useRef<boolean>();
     return (
       <>
         <CardAction {...(answer === null && { onClick: setWordAnswer(false) })}>

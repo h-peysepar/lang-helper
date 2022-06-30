@@ -2,7 +2,7 @@ import axios from 'axios';
 import { axios as encancedAxios } from './api';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
-export function getDefinition(word: string) {
+export function getDefinition(word: string | string[]) {
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&hl=en-US&dt=t&dt=bd&dj=1&q=${word}`;
   return axios
     .get(url)
@@ -18,11 +18,14 @@ export const clearToken = () => {
   Cookies.remove('auth');
   Cookies.remove('uesr_id');
 };
-export const setToken = token => {
+export const setToken = (token: string) => {
   Cookies.set('auth', token);
-  Cookies.set('user_id', jwt_decode(token)._id);
+  Cookies.set(
+    'user_id',
+    jwt_decode<{ user_id: number; _id: string }>(token)._id
+  );
 };
-export const fetcher = (url, opts) => () =>
+export const fetcher = <T>(url: string, opts?: object) => (): Promise<T> =>
   new Promise((res, rej) =>
     encancedAxios.get(url, opts).then(({ data }) => {
       const { data: pureData, ...others } = data;
@@ -32,9 +35,9 @@ export const fetcher = (url, opts) => () =>
       res(data);
     })
   );
-export const EnNumber = function (num) {
+export const EnNumber = function (num: string): string {
   if (typeof num !== 'string') return num;
-  const nums = {
+  const nums: any = {
     '۱': '1',
     '۲': '2',
     '۳': '3',

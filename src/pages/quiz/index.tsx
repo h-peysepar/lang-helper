@@ -10,13 +10,19 @@ import { useRouter } from 'next/router';
 import PieChart from '../../components/PieChart';
 import Loading from '../../components/Loading';
 export interface QuizProps {}
+interface TQuiz {
+  _id: string;
+  date: Date;
+  is_done: boolean;
+  statistics: [number, number];
+}
 export default function QuizList(props: QuizProps) {
   const {
     data: quizList,
     refetch,
     isLoading: listLoading,
-  } = useQuery('QUIZES_LIST', fetcher('/quiz', {}));
-  const { mutate, isLoading } = useMutation(() =>
+  } = useQuery('QUIZES_LIST', fetcher<TQuiz[]>('/quiz', {}));
+  const { mutate, isLoading } = useMutation<{}, {}, null>(() =>
     axios.post('/quiz', { date: new Date().toISOString().slice(0, 10) })
   );
   const router = useRouter();
@@ -29,17 +35,16 @@ export default function QuizList(props: QuizProps) {
         Generate Quiz
       </Button>
       {listLoading ? (
-        <Loading staticc/>
+        <Loading staticc />
       ) : (
         quizList?.map(quiz => (
-          <Card onClick={() => router.push(`/quiz/${quiz._id}`)}>
+          <Card key={quiz._id} onClick={() => router.push(`/quiz/${quiz._id}`)}>
             <span>
               {EnNumber(
                 new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
               )}
             </span>
-            {console.log(quiz.statistics)}
-            {quiz.is_done && <PieChart data={quiz.statistics} id={quiz._id} />}
+            {quiz.is_done && <PieChart data={quiz.statistics} />}
           </Card>
         ))
       )}

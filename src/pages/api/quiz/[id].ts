@@ -1,7 +1,9 @@
+import { Types } from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import handler from 'next-connect';
-import Quiz from '../../../models/quiz';
+import Quiz, { QuizInterface } from '../../../models/quiz';
 import Word from '../../../models/word';
+
 const router = handler<NextApiRequest, NextApiResponse>();
 router
   .get(async function (req, res) {
@@ -15,7 +17,8 @@ router
     } catch (error) {}
   })
   .patch(async (req, res) => {
-    const { word_id, answer }: { answer: boolean } = req.body;
+    const { word_id, answer }: { answer: boolean; word_id: Types.ObjectId } =
+      req.body;
     const { id: quiz_id } = req.query;
     if (!quiz_id || !word_id) {
       res.status(422).json({ errorMessage: 'quiz_id or word_id is missed' });
@@ -27,15 +30,18 @@ router
 
     try {
       const [quiz, word] = await Promise.all([
-        Quiz.findOne({ $and: [{ _id: quiz_id }, { 'words.word': word_id }] }),
+        Quiz.findOne<QuizInterface>({ $and: [{ _id: quiz_id }, { 'words.word': word_id }] }),
         Word.findOne({ user_id: req.cookies.user_id, _id: word_id }),
       ]);
-      const targetWord = quiz.words.find(({ word }: any) => word == word_id);
+      if (!quiz) return res.status(409).json({errorMessage: 'something went wrong'})
+      const targetWord = quiz.words.find(({ word }) => word === word_id);
+      if (!targetWord) return res.status(409).json({errorMessage: 'something went wrong'})
       targetWord.answer = answer;
       word[key]++;
       if (quiz.words.every(i => i.answer !== null)) {
         quiz.is_done = true;
       }
+      // @ts-ignore
       const [, savedWord] = await Promise.all([quiz.save(), word.save()]);
       res.json({ data: { success: true, _id: savedWord._id } });
     } catch (error) {

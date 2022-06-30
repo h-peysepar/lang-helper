@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface Props {
-  data: [number];
+  data: [number, number];
 }
 
 function PieChart(props: Props) {
@@ -56,10 +56,11 @@ function PieChart(props: Props) {
       generateSVG()
     }
   }, [data])
-  const svg = useRef()
+  const svg = useRef<SVGSVGElement>(null)
   return (
     <svg
       id={`graph`}
+      ref={svg}
       width='30'
       height='30'
       xmlns='http://www.w3.org/2000/svg'

@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Loading({staticc}) {
+function Loading({ staticc }: { staticc?: boolean }) {
   return (
-    <span className={!staticc ? 'fixCenter': 'justify-center w-full flex'}>
+    <span className={!staticc ? 'fixCenter' : 'justify-center w-full flex'}>
       <svg
         className='animate-spin m-1 h-5 w-5 text-white'
         xmlns='http://www.w3.org/2000/svg'

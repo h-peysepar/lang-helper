@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import jwt from 'jsonwebtoken';
-import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
+import { NextFetchEvent, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest, ev: NextFetchEvent) {
+export function middleware(req: NextApiRequest, ev: NextFetchEvent) {
   if (req.url?.split('/')[4] !== 'auth') {
     try {
-      const token = req.headers.get('token');
+      const token = req.cookies.auth;
       jwt.verify(token, 'hadisupersecretkey');
       NextResponse.next();
     } catch (error) {

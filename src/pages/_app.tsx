@@ -3,29 +3,28 @@ import type { AppProps } from 'next/app';
 import Menubar from '../components/Menubar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '../styles/main.scss';
-import Loading from '../components/Loading';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { getToken } from '../utils/helpers';
 import Styled from '../components/Styled';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     },
   },
-})
+});
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState();
   if (typeof window !== 'undefined') {
     const hasToken = getToken();
+    // @ts-ignore
     if (Component.private) {
       if (!hasToken) {
         router.replace('/sign-in');
         return null;
       }
+      // @ts-ignore
     } else if (Component.protected) {
       if (hasToken) {
         router.replace('/');
@@ -71,4 +70,4 @@ const Content = Styled('div')`
   main
   flex-1
   overflow-y-auto
-`
+`;

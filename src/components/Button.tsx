@@ -1,20 +1,20 @@
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import React from 'react';
+import React, { FC, HTMLAttributes } from 'react';
 import Loading from './Loading';
 import Styled from './Styled';
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLElement> {
   children: ReactJSXElement | string;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
-function Button({ children, ...props }: Props) {
+const Button = ({ children, isLoading, ...props }: Props) => {
   return (
     <Btn {...props} className={'relative' + ' ' + props.className}>
-      {props.isLoading ? <Loading /> : children}
+      {isLoading ? <Loading /> : children}
     </Btn>
   );
-}
+};
 
 export default Button;
 const Btn = Styled('button')`

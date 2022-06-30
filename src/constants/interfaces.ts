@@ -18,3 +18,4 @@ export interface Setting{
      quiz_per_day: number,
      countof_correct_answers_to_pass_word: number,
 }
+

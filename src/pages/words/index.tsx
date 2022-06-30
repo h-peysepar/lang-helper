@@ -8,7 +8,7 @@ import { axios } from '../../utils/api';
 import Styled from '../../components/Styled';
 import Loading from '../../components/Loading';
 
-const fetcher = () =>
+const fetcher = (): Promise<IncomingWord[]> =>
   new Promise((res, rej) =>
     axios.get('/words').then(({ data: { data } }) => res(data))
   );
@@ -44,7 +44,7 @@ function Words(props: WordsProps) {
   }
   return (
     <div className=''>
-      {data?.map((item: IncomingWord) => (
+      {data?.map((item) => (
         <RotatableCard
           key={item._id}
           word={item.word}
