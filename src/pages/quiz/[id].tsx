@@ -57,6 +57,13 @@ function Quiz(props: Props) {
       mutate(payload, { onSuccess: () => setAnswer(state) });
     };
     const dirtyButton = useRef<boolean>();
+    if (answer !== null) {
+      return (
+        <span className={`text-${answer ? 'green' : 'red'}-600`}>
+          {String(answer)}
+        </span>
+      );
+    }
     return (
       <>
         <CardAction {...(answer === null && { onClick: setWordAnswer(false) })}>

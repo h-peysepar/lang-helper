@@ -29,7 +29,7 @@ export default function QuizList(props: QuizProps) {
   const router = useRouter();
   const renderList = () => {
     if (listLoading) {
-      <Loading staticc />;
+      return <Loading staticc />;
     }
     if (!quizList?.length) {
       return <NoRecord />;
@@ -41,7 +41,7 @@ export default function QuizList(props: QuizProps) {
             new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
           )}
         </span>
-        {quiz.is_done && <PieChart data={quiz.statistics} />}
+        {quiz.is_done ? <PieChart data={quiz.statistics} />: <span>Incomplete</span>}
       </Card>
     ));
   };
