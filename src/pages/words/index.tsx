@@ -1,12 +1,11 @@
 import * as React from 'react';
-// import IconButton from '@mui/material/IconButton';
 // import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import RotatableCard from '../../components/RotatableCard';
 import { IncomingWord } from '../../constants/interfaces';
-import { useQuery } from 'react-query';
 import { axios } from '../../utils/api';
 import Styled from '../../components/Styled';
 import Loading from '../../components/Loading';
+import useQuery from '../../hooks/useQuery';
 import NoRecord from '../../components/NoRecord';
 
 const fetcher = (): Promise<IncomingWord[]> =>
@@ -39,14 +38,13 @@ function Words(props: WordsProps) {
       </>
     );
   };
-  const { isLoading, error, data } = useQuery('WORDS_LIST', fetcher, {
-    refetchOnWindowFocus: false,
-  });
-  if(isLoading){
-    return <Loading />
+
+  const { isLoading, error, data } = useQuery<IncomingWord[]>('WORDS_LIST', '/words');
+
   if (isLoading) {
     return <Loading />;
   }
+  if(!data) return null;
   if(!data?.length){
     return <NoRecord />
   }

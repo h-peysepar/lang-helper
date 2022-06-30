@@ -16,7 +16,7 @@ export function getDefinition(word: string | string[]) {
 export const getToken = () => Cookies.get('auth');
 export const clearToken = () => {
   Cookies.remove('auth');
-  Cookies.remove('uesr_id');
+  Cookies.remove('user_id');
 };
 export const setToken = (token: string) => {
   Cookies.set('auth', token);
@@ -25,16 +25,25 @@ export const setToken = (token: string) => {
     jwt_decode<{ user_id: number; _id: string }>(token)._id
   );
 };
-export const fetcher = <T>(url: string, opts?: object) => (): Promise<T> =>
-  new Promise((res, rej) =>
-    encancedAxios.get(url, opts).then(({ data }) => {
-      const { data: pureData, ...others } = data;
-      if (data && !Object.keys(others).length) {
-        return res(pureData);
-      }
-      res(data);
-    })
-  );
+export const logOut = () => {
+  clearToken();
+  window.location.reload();
+};
+export const fetcher =
+  <T>(url: string, opts?: object) =>
+  (): Promise<T> =>
+    new Promise((res, rej) =>
+      encancedAxios
+        .get(url, opts)
+        .then(({ data }) => {
+          const { data: pureData, ...others } = data;
+          if (data && !Object.keys(others).length) {
+            return res(pureData);
+          }
+          res(data);
+        })
+        .catch(error => rej(error))
+    );
 export const EnNumber = function (num: string): string {
   if (typeof num !== 'string') return num;
   const nums: any = {

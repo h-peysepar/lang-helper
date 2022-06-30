@@ -1,10 +1,11 @@
 import { Clear, Done } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import Loading from '../../components/Loading';
 import RotatableCard from '../../components/RotatableCard';
 import Styled from '../../components/Styled';
+import useQuery from '../../hooks/useQuery';
 import { axios } from '../../utils/api';
 import { fetcher } from '../../utils/helpers';
 
@@ -31,7 +32,8 @@ function Quiz(props: Props) {
   } = useRouter();
   const { data, isLoading } = useQuery<Response>(
     [quizId, 'QUIZ'],
-    fetcher<Response>(`/quiz/${quizId}`, { enabled: !!quizId })
+    `/quiz/${quizId}`,
+    { enabled: !!quizId }
   );
 
   if (isLoading) {

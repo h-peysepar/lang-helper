@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import Label from '../../components/Label';
 import Styled from '../../components/Styled';
+import useQuery from '../../hooks/useQuery';
 import { axios } from '../../utils/api';
-import { clearToken, fetcher } from '../../utils/helpers';
+import { logOut } from '../../utils/helpers';
 export interface SettingProps {}
 interface TSetting {
   quiz_per_day: number;
@@ -14,8 +15,8 @@ interface TSetting {
 }
 export default function Setting(props: SettingProps) {
   const { handleSubmit, register, reset } = useForm<TSetting>();
-  const { data, refetch } = useQuery('SETTING', fetcher<TSetting>('/setting', {}));
-  const { mutate, data: updatedData } = useMutation((data) =>
+  const { data, refetch } = useQuery<TSetting>('SETTING', '/setting');
+  const { mutate, data: updatedData } = useMutation(data =>
     axios.patch('/setting', data)
   );
   useEffect(() => {
@@ -53,14 +54,7 @@ export default function Setting(props: SettingProps) {
         <Button className=''>Submit</Button>
       </div>
       <div className='mx-12'>
-        <LogoutButton
-          onClick={() => {
-            clearToken();
-            window.location.reload();
-          }}
-        >
-          Logout
-        </LogoutButton>
+        <LogoutButton onClick={logOut}>Logout</LogoutButton>
       </div>
     </form>
   );

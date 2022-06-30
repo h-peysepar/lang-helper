@@ -1,7 +1,7 @@
 'use strict';
 import * as React from 'react';
 // import { IncomingWord } from '../../constants/interfaces';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { EnNumber, fetcher } from '../../utils/helpers';
 import { axios } from '../../utils/api';
 import Button from '../../components/Button';
@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import PieChart from '../../components/PieChart';
 import Loading from '../../components/Loading';
 import NoRecord from '../../components/NoRecord';
+import useQuery from '../../hooks/useQuery';
 export interface QuizProps {}
 interface TQuiz {
   _id: string;
@@ -22,7 +23,7 @@ export default function QuizList(props: QuizProps) {
     data: quizList,
     refetch,
     isLoading: listLoading,
-  } = useQuery('QUIZES_LIST', fetcher<TQuiz[]>('/quiz', {}));
+  } = useQuery<TQuiz[]>('QUIZES_LIST', '/quiz');
   const { mutate, isLoading } = useMutation<{}, {}, null>(() =>
     axios.post('/quiz', { date: new Date().toISOString().slice(0, 10) })
   );
@@ -41,7 +42,11 @@ export default function QuizList(props: QuizProps) {
             new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
           )}
         </span>
-        {quiz.is_done ? <PieChart data={quiz.statistics} />: <span>Incomplete</span>}
+        {quiz.is_done ? (
+          <PieChart data={quiz.statistics} />
+        ) : (
+          <span>Incomplete</span>
+        )}
       </Card>
     ));
   };
