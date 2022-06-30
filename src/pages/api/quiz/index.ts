@@ -39,6 +39,7 @@ router
               statistics: [(all - trues) / all, trues / all],
             };
           })
+          .reverse(),
       });
     } catch (error) {
       res.json(error);
