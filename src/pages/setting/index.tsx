@@ -34,13 +34,13 @@ export default function Setting(props: SettingProps) {
   };
   return (
     <form className='p-2' onSubmit={handleSubmit(onSubmit)}>
-      <div className='p-2'>
+      {/* <div className='p-2'>
         <Label className='text-sm'>Quize Per Day</Label>
         <Input
           className='general-input'
           {...register('quiz_per_day', { setValueAs: i => +i })}
         />
-      </div>
+      </div> */}
       <div className='p-2'>
         <Label className='text-xs'>Correct Answers To Pass A Word</Label>
         <Input
