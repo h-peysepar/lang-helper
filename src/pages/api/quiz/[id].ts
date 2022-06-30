@@ -39,7 +39,7 @@ router
       ]);
       if (!quiz)
         return res.status(409).json({ errorMessage: 'something went wrong' });
-      const targetWord = quiz.words.find(({ word }) => word === word_id);
+      const targetWord = quiz.words.find(({ word }) => word == word_id);
       if (!targetWord)
         return res.status(409).json({ errorMessage: 'something went wrong' });
       targetWord.answer = answer;
