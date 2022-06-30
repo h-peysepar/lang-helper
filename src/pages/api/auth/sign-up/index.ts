@@ -14,7 +14,7 @@ export default async function handler(
       errorMessage: "Password dosn't match confirm password",
     });
   }
-  await connectDb();
+  await connectDb({});
   try {
     const user = await User.findOne({ username });
     if (user) {

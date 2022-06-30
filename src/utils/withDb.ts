@@ -29,7 +29,8 @@ export async function connectDb({
 
 export default function withDb(func: Function) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
-    await connectDb({onError: () => res.json({errorMessage: 'unexpected thing occured!'})});
+    // @ts-ignore
+    await connectDb({onError: (error) => res.json({errorMessage: 'unexpected thing occured!', error})});
     func(req, res);
   };
 }
