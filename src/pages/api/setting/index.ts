@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import handler from 'next-connect';
 import User from '../../../models/user';
+import withDb from '../../../utils/withDb';
+import withProtect from '../../../utils/withProtect';
 const router = handler<NextApiRequest, NextApiResponse>();
 router
   .get(async (req, res) => {
@@ -29,4 +31,4 @@ router
       res.status(409).send('something went wrong');
     }
   });
-export default router;
+export default withProtect(withDb(router));

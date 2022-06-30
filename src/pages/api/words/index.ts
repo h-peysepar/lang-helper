@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Word from '../../../models/word';
 import handler from 'next-connect';
 import { getDefinition } from '../../../utils/helpers';
+import withProtect from '../../../utils/withProtect';
 // const Word = {};
 const router = handler<NextApiRequest, NextApiResponse>();
 router
@@ -15,7 +16,6 @@ router
       .catch(err => console.log('error: ', err.message));
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log('=============================')
     let { word, definition, defaultDefinition } = req.body;
     if (!definition && !defaultDefinition) {
       try {
@@ -34,4 +34,4 @@ router
       .then((word: any) => {console.log(word);res.json({ data: word })})
       .catch((err: any) => console.log(err.message));
   });
-export default withDb(router);
+export default withProtect(withDb(router));

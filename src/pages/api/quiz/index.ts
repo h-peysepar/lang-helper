@@ -5,6 +5,7 @@ import handler from 'next-connect';
 import { getDefinition } from '../../../utils/helpers';
 import Quiz, { QuizInterface } from '../../../models/quiz';
 import User from '../../../models/user';
+import withProtect from '../../../utils/withProtect';
 // const Word = {};
 const router = handler<NextApiRequest, NextApiResponse>();
 router
@@ -36,10 +37,10 @@ router
         }),
       });
     } catch (error) {
-      console.log(error);
+      res.json(error);
     }
   });
-export default withDb(router);
+export default withProtect(withDb(router));
 const generateQuiz = async ({
   user_id,
   max,

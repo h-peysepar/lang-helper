@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import handler from 'next-connect';
 import Quiz, { QuizInterface } from '../../../models/quiz';
 import Word from '../../../models/word';
+import withDb from '../../../utils/withDb';
+import withProtect from '../../../utils/withProtect';
 
 const router = handler<NextApiRequest, NextApiResponse>();
 router
@@ -30,12 +32,16 @@ router
 
     try {
       const [quiz, word] = await Promise.all([
-        Quiz.findOne<QuizInterface>({ $and: [{ _id: quiz_id }, { 'words.word': word_id }] }),
+        Quiz.findOne<QuizInterface>({
+          $and: [{ _id: quiz_id }, { 'words.word': word_id }],
+        }),
         Word.findOne({ user_id: req.cookies.user_id, _id: word_id }),
       ]);
-      if (!quiz) return res.status(409).json({errorMessage: 'something went wrong'})
+      if (!quiz)
+        return res.status(409).json({ errorMessage: 'something went wrong' });
       const targetWord = quiz.words.find(({ word }) => word === word_id);
-      if (!targetWord) return res.status(409).json({errorMessage: 'something went wrong'})
+      if (!targetWord)
+        return res.status(409).json({ errorMessage: 'something went wrong' });
       targetWord.answer = answer;
       word[key]++;
       if (quiz.words.every(i => i.answer !== null)) {
@@ -45,9 +51,8 @@ router
       const [, savedWord] = await Promise.all([quiz.save(), word.save()]);
       res.json({ data: { success: true, _id: savedWord._id } });
     } catch (error) {
-      console.log(error);
       res.json(error);
     }
   });
 
-export default router;
+export default withProtect(withDb(router));
