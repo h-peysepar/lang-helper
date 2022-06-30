@@ -9,6 +9,7 @@ import Styled from '../../components/Styled';
 import { useRouter } from 'next/router';
 import PieChart from '../../components/PieChart';
 import Loading from '../../components/Loading';
+import NoRecord from '../../components/NoRecord';
 export interface QuizProps {}
 interface TQuiz {
   _id: string;
@@ -26,6 +27,24 @@ export default function QuizList(props: QuizProps) {
     axios.post('/quiz', { date: new Date().toISOString().slice(0, 10) })
   );
   const router = useRouter();
+  const renderList = () => {
+    if (listLoading) {
+      <Loading staticc />;
+    }
+    if (!quizList?.length) {
+      return <NoRecord />;
+    }
+    return quizList?.map(quiz => (
+      <Card key={quiz._id} onClick={() => router.push(`/quiz/${quiz._id}`)}>
+        <span>
+          {EnNumber(
+            new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
+          )}
+        </span>
+        {quiz.is_done && <PieChart data={quiz.statistics} />}
+      </Card>
+    ));
+  };
   return (
     <div className='relative'>
       <Button
@@ -34,20 +53,7 @@ export default function QuizList(props: QuizProps) {
       >
         Generate Quiz
       </Button>
-      {listLoading ? (
-        <Loading staticc />
-      ) : (
-        quizList?.map(quiz => (
-          <Card key={quiz._id} onClick={() => router.push(`/quiz/${quiz._id}`)}>
-            <span>
-              {EnNumber(
-                new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
-              )}
-            </span>
-            {quiz.is_done && <PieChart data={quiz.statistics} />}
-          </Card>
-        ))
-      )}
+      {renderList()}
     </div>
   );
 }

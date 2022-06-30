@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import { axios } from '../../utils/api';
 import Styled from '../../components/Styled';
 import Loading from '../../components/Loading';
+import NoRecord from '../../components/NoRecord';
 
 const fetcher = (): Promise<IncomingWord[]> =>
   new Promise((res, rej) =>
@@ -29,10 +30,12 @@ function Words(props: WordsProps) {
         {/* <IconButton>
           <DeleteOutline />
         </IconButton> */}
-        {/* {console.log(actionProps.wrongAnsweres)}
-        {console.log(actionProps.rightAnswers)} */}
-        <Statistics className='text-red-600'>{actionProps.wrongAnsweres}</Statistics>
-        <Statistics className='text-green-600'>{actionProps.rightAnswers}</Statistics>
+        <Statistics className='text-red-600'>
+          {actionProps.wrongAnsweres}
+        </Statistics>
+        <Statistics className='text-green-600'>
+          {actionProps.rightAnswers}
+        </Statistics>
       </>
     );
   };
@@ -41,23 +44,30 @@ function Words(props: WordsProps) {
   });
   if(isLoading){
     return <Loading />
+  if (isLoading) {
+    return <Loading />;
+  }
+  if(!data?.length){
+    return <NoRecord />
   }
   return (
     <div className=''>
-      {data?.map((item) => (
-        <RotatableCard
-          key={item._id}
-          word={item.word}
-          definition={item.definition}
-          ActionComponent={() => (
-            <ActionComponent
-              rightAnswers={item.countOfRightAnswers}
-              wrongAnsweres={item.countOfWrongAnswers}
-              id={item._id}
-            />
-          )}
-        />
-      ))}
+      {
+        data?.map(item => (
+          <RotatableCard
+            key={item._id}
+            word={item.word}
+            definition={item.definition}
+            ActionComponent={() => (
+              <ActionComponent
+                rightAnswers={item.countOfRightAnswers}
+                wrongAnsweres={item.countOfWrongAnswers}
+                id={item._id}
+              />
+            )}
+          />
+        ))
+      }
     </div>
   );
 }
@@ -67,4 +77,4 @@ const Statistics = Styled('div')`
   mx-3
   w-5
   text-center
-`
+`;
