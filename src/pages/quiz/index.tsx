@@ -24,9 +24,11 @@ export default function QuizList(props: QuizProps) {
     refetch,
     isLoading: listLoading,
   } = useQuery<TQuiz[]>('QUIZES_LIST', '/quiz');
-  const { mutate, isLoading } = useMutation<{}, {}, null>(() =>
-    axios.post('/quiz', { date: new Date().toISOString().slice(0, 10) })
-  );
+  const { mutate, isLoading, error } = useMutation<
+    {},
+    { response: { data: { errorMessage: string } } },
+    null
+  >(() => axios.post('/quiz', { date: new Date().toISOString().slice(0, 10) }));
   const router = useRouter();
   const renderList = () => {
     if (listLoading) {
@@ -58,6 +60,7 @@ export default function QuizList(props: QuizProps) {
       >
         Generate Quiz
       </Button>
+      <div className='text-gray-50 opacity-40 mx-4 my-3'>{error?.response?.data?.errorMessage}</div>
       {renderList()}
     </div>
   );

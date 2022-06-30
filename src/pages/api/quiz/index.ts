@@ -17,7 +17,10 @@ router
     }
     const { max } = setting;
     const { date } = req.body;
-    res.json(await generateQuiz({ user_id, max, date }));
+    const quiz = await generateQuiz({ user_id, max, date });
+    res
+      .status(quiz.hasError ? 409 : 200)
+      .json(quiz.hasError ? { errorMessage: 'No Word Found, Please Add Some Words First!' } : quiz);
   })
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { user_id } = req.cookies;
@@ -26,15 +29,16 @@ router
       const quizes = await Quiz.find<QuizInterface>({ user_id });
 
       res.json({
-        data: quizes.map(q => {
-          const all = q.words.length;
-          const trues = q.words.filter(w => w.answer === true).length;
-          return {
-            // @ts-ignore
-            ...q._doc,
-            statistics: [(all - trues) / all, trues / all],
-          };
-        }),
+        data: quizes
+          .map(q => {
+            const all = q.words.length;
+            const trues = q.words.filter(w => w.answer === true).length;
+            return {
+              // @ts-ignore
+              ...q._doc,
+              statistics: [(all - trues) / all, trues / all],
+            };
+          })
       });
     } catch (error) {
       res.json(error);
@@ -58,6 +62,7 @@ const generateQuiz = async ({
       },
       'word definition'
     ).sort('-countOfWrongAnswers createdDate');
+    if (!quizWords.length) return { hasError: true };
     let newQuiz = new Quiz({
       user_id,
       date,
