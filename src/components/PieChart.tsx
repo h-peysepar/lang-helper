@@ -7,7 +7,7 @@ interface Props {
 function PieChart(props: Props) {
   const { data } = props;
 
-  const colors = ['rgb(220 38 38)', 'rgb(22 163 74)'];
+  const colors = ['rgb(211, 47, 47)', 'rgb(56, 142, 60)'];
 
   // Just change these top three variables to generate and SVG pie chart
   // const colors = ['red', 'green'];
@@ -38,25 +38,28 @@ function PieChart(props: Props) {
     };
   });
 
-  const generateSVG = function(){
+  const generateSVG = function () {
     slices.forEach(slice => {
       const sliceEl = document.createElementNS(
         'http://www.w3.org/2000/svg',
         'path'
       );
-  
+
       sliceEl.setAttribute('d', slice.d);
       sliceEl.setAttribute('fill', slice.fill);
-  
+
       svg.current?.appendChild(sliceEl);
     });
-  }
-  useEffect(function(){
-    if(data){
-      generateSVG()
-    }
-  }, [data])
-  const svg = useRef<SVGSVGElement>(null)
+  };
+  useEffect(
+    function () {
+      if (data) {
+        generateSVG();
+      }
+    },
+    [data]
+  );
+  const svg = useRef<SVGSVGElement>(null);
   return (
     <svg
       id={`graph`}
