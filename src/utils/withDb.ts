@@ -33,7 +33,6 @@ export default function withDb(func: Function) {
         res.status(500).json({
           errorMessage: 'unexpected thing occured!',
           error: error.message,
-          url: u,
         }),
     });
     func(req, res);
