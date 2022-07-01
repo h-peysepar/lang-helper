@@ -2,6 +2,7 @@
 import { connect, connection } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+let u: string;
 const voidFn = () => {};
 export async function connectDb({
   onSuccess = voidFn,
@@ -11,7 +12,7 @@ export async function connectDb({
   onError?: Function;
 }) {
   const db_url = process.env.MONGO_LOCAL || process.env.MONGO_URI;
-
+  u = db_url;
   if (connection.readyState === 1) {
     return console.log('db: already connected');
   }
@@ -32,6 +33,7 @@ export default function withDb(func: Function) {
         res.status(500).json({
           errorMessage: 'unexpected thing occured!',
           error: error.message,
+          url: u,
         }),
     });
     func(req, res);
