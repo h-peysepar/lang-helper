@@ -29,7 +29,6 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
   const { mutate, data } = useMutation(fetcher, {
     onSuccess,
   });
-  console.log({ data });
   const onSubmit = handleSubmit(async (data: any) => {
     const { confirm_password, ...values } = data;
     if (props.mode === 'sign-in') {
@@ -37,8 +36,8 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
     } else if (props.mode === 'sign-up') {
       axios
         .post('/api/auth/sign-up', data)
-        .then(res => console.log({ res }))
-        .catch(err => console.log({ err }));
+        .then(res => router.push('/sign-in'))
+        .catch(err => {});
     }
   });
   const validations = {

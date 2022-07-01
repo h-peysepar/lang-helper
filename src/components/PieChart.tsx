@@ -25,7 +25,6 @@ function PieChart(props: Props) {
   let percentageSum = 0;
   let startXY = { x: radius, y: 0 };
   const slices = data.map((percent, i) => {
-    console.log(percent);
     percentageSum += percent;
     const angle = Math.PI * 2 * percentageSum;
 

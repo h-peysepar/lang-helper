@@ -7,7 +7,6 @@ import User from '../../../../models/user';
 const router = handler<NextApiRequest, NextApiResponse>();
 
 router.post((req: NextApiRequest, res: NextApiResponse) => {
-  console.log({body: req.body})  
   let { username, password } = req.body || {};
   username = username.trim();
   User.findOne({ username }).then(user => {

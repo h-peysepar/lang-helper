@@ -14,7 +14,7 @@ export async function connectDb({
   const db_url = process.env.MONGO_LOCAL || process.env.MONGO_URI;
   u = db_url;
   if (connection.readyState === 1) {
-    return console.log('db: already connected');
+    return;
   }
   try {
     await connect(db_url);
