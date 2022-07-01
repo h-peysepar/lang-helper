@@ -31,14 +31,12 @@ export default RotatableCard;
 export const CardSection = Styled('div')`
      h-full
      bg-gray-50
-     h-full
      bg-opacity-60
 `;
 const CardLayer = Styled('div')`
     cursor-pointer    
     absolute
     h-full
-    w-full
     flex
     items-center
     left-5

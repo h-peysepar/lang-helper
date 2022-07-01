@@ -35,3 +35,6 @@ $scrollbar-width: #ebebeb57;
           background: darken($scrollbar-width, 4);
      }
 }
+html {
+     -webkit-tap-highlight-color: transparent;
+}

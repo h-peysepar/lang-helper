@@ -61,7 +61,7 @@ function Quiz(props: Props) {
     const dirtyButton = useRef<boolean>();
     if (answer !== null) {
       return (
-        <span className={`text-${answer ? 'green' : 'red'}-600`}>
+        <span className={`text-${answer ? 'green' : 'red'}-600 block pl-4`}>
           {String(answer)}
         </span>
       );
