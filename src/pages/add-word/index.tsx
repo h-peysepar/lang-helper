@@ -96,3 +96,4 @@ export default function AddForm(props: AddFormProps) {
     </form>
   );
 }
+AddForm.private = true

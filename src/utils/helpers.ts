@@ -13,6 +13,7 @@ export function getDefinition(word: string | string[]) {
 //   err. = code;
 //   return err
 // }
+export type Token = {_id: string, exp: number, iat: number}
 export const getToken = () => Cookies.get('auth');
 export const clearToken = () => {
   Cookies.remove('auth');

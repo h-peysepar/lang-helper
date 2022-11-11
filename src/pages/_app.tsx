@@ -4,9 +4,10 @@ import Menubar from '../components/Menubar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '../styles/main.scss';
 import { useRouter } from 'next/router';
-import { getToken } from '../utils/helpers';
+import { clearToken, getToken, Token } from '../utils/helpers';
 import Styled from '../components/Styled';
 import AppHead from '../components/Head';
+import jwt from 'jwt-decode';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,10 +19,17 @@ export const queryClient = new QueryClient({
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   if (typeof window !== 'undefined') {
-    const hasToken = getToken();
+    const token = getToken();
+    const hasToken = !!token;
     // @ts-ignore
     if (Component.private) {
-      if (!hasToken) {
+      let isExpired: boolean = false;
+      if(token){
+        const decoded: Token = jwt(token)
+        isExpired = decoded.exp * 1000 < Date.now()
+      }
+      if (!hasToken || isExpired) {
+        clearToken();
         router.replace('/sign-in');
         return null;
       }
