@@ -11,15 +11,18 @@ router.post((req: NextApiRequest, res: NextApiResponse) => {
   username = username.trim();
   User.findOne({ username }).then(user => {
     if (!user) {
-      res.status(404).json({ errorMessage: 'user not found' });
+      res.status(422).json({ errorMessage: 'Username Or Password Is Not Correct' });
+      return;
     }
     if (password === user.password) {
       const token = jwt.sign({ _id: user._id }, 'hadisupersecretkey', {
         expiresIn: 60 * 60 * 24 * 7,
       });
       res.json({ data: { token, success: true } });
+      return;
     } else {
-      return res.status(404).send('user not fount');
+      res.status(422).json({ errorMessage: 'Username Or Password Is Not Correct' });
+      return;
     }
   });
 });

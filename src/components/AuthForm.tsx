@@ -5,7 +5,7 @@ import ErrorMessage from './errorMessage';
 import Label from './Label';
 import axios from 'axios';
 import { useMutation } from 'react-query';
-import { setToken } from '../utils/helpers';
+import { clearToken, setToken } from '../utils/helpers';
 import { Input } from './Input';
 import Button from './Button';
 
@@ -26,7 +26,7 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
     setToken(x?.data?.data?.token);
     router.push('/quiz');
   };
-  const { mutate, data } = useMutation(fetcher, {
+  const { mutate, data, isLoading, error } = useMutation<Object>(fetcher, {
     onSuccess,
   });
   const onSubmit = handleSubmit(async (data: any) => {
@@ -74,7 +74,8 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
     >
       <div className='flex flex-col justify-center items-center w-full'>
         <h1 className='welcome text-blue-400'>Welcome!</h1>
-        <div className='text-red-600 h-5 my-2'>{/**props.errorMessage */}</div>
+        {/**@ts-ignore */}
+        <div className='text-red-600 h-5 my-2'>{error?.response?.data.errorMessage}</div>
         <div className='flex flex-col gap-1 justify-center items-center w-10/12'>
           <div className='w-full mb-2'>
             <Label>username</Label>
@@ -104,7 +105,7 @@ function AuthForm(props: { mode: 'sign-in' | 'sign-up' }) {
           >
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </a>
-          <Button>Submit</Button>
+          <Button isLoading={isLoading || !!data}>Submit</Button>
         </div>
       </div>
     </form>
