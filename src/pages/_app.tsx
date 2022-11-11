@@ -6,6 +6,7 @@ import '../styles/main.scss';
 import { useRouter } from 'next/router';
 import { getToken } from '../utils/helpers';
 import Styled from '../components/Styled';
+import AppHead from '../components/Head';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,16 +35,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <App>
-        <Content>
-          <Component {...pageProps} />
-        </Content>
-        <MenuContainer className='menubar bg'>
-          <Menubar />
-        </MenuContainer>
-      </App>
-    </QueryClientProvider>
+    <>
+      <AppHead />
+      <QueryClientProvider client={queryClient}>
+        <App>
+          <Content>
+            <Component {...pageProps} />
+          </Content>
+          <MenuContainer className='menubar bg'>
+            <Menubar />
+          </MenuContainer>
+        </App>
+      </QueryClientProvider>
+    </>
   );
 }
 
