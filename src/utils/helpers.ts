@@ -2,6 +2,7 @@ import axios from 'axios';
 import { axios as encancedAxios } from './api';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
+import { Db } from './withDb';
 export function getDefinition(word: string | string[]) {
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&hl=en-US&dt=t&dt=bd&dj=1&q=${word}`;
   return axios
@@ -13,7 +14,7 @@ export function getDefinition(word: string | string[]) {
 //   err. = code;
 //   return err
 // }
-export type Token = {_id: string, exp: number, iat: number}
+export type Token = { _id: string; exp: number; iat: number };
 export const getToken = () => Cookies.get('auth');
 export const clearToken = () => {
   Cookies.remove('auth');
@@ -64,3 +65,6 @@ export const EnNumber = function (num: string): string {
     .map(i => nums[i] || i)
     .join('');
 };
+
+export const ID = (entity: keyof Db): string =>
+  `$$${entity.toUpperCase()}$$${Date.now()}`;

@@ -1,0 +1,33 @@
+{
+  "posts": [],
+  "users": [
+    {
+      "username": "testusername",
+      "password": "a123456",
+      "quiz_per_day": 1,
+      "countof_correct_answers_to_pass_word": 12
+    },
+    {
+      "username": "aligholi",
+      "password": "a123456",
+      "quiz_per_day": 1,
+      "countof_correct_answers_to_pass_word": 12,
+      "id": "$$USERS$$1668886263039"
+    },
+    {
+      "username": "newUser",
+      "password": "a123456",
+      "quiz_per_day": 1,
+      "countof_correct_answers_to_pass_word": 12,
+      "id": "$$USERS$$1668886337629"
+    },
+    {
+      "username": "hadipr",
+      "password": "h123123",
+      "quiz_per_day": 1,
+      "countof_correct_answers_to_pass_word": 12,
+      "id": "$$USERS$$1668969169129"
+    }
+  ],
+  "quizes": []
+}
