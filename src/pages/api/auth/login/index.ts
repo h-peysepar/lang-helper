@@ -1,30 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import withDb from '../../../../utils/withDb';
-import handler from 'next-connect';
+import withDb, { DbObject } from '../../../../utils/withDb';
 import jwt from 'jsonwebtoken';
-import User from '../../../../models/user';
 
-const router = handler<NextApiRequest, NextApiResponse>();
-
-router.post((req: NextApiRequest, res: NextApiResponse) => {
+const handler = function (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  db: DbObject
+) {
   let { username, password } = req.body || {};
   username = username.trim();
-  User.findOne({ username }).then(user => {
-    if (!user) {
-      res.status(422).json({ errorMessage: 'Username Or Password Is Not Correct' });
-      return;
-    }
-    if (password === user.password) {
-      const token = jwt.sign({ _id: user._id }, 'hadisupersecretkey', {
-        expiresIn: 60 * 60 * 24 * 7,
-      });
-      res.json({ data: { token, success: true } });
-      return;
-    } else {
-      res.status(422).json({ errorMessage: 'Username Or Password Is Not Correct' });
-      return;
-    }
+  const { users } = db.data || {};
+  const target = users?.find(user => user.username === username);
+  if (!target || target.password !== password) {
+    res
+      .status(422)
+      .json({ errorMessage: 'Username Or Password Is Not Correct' });
+    return;
+  }
+  const token = jwt.sign({ _id: target.id }, 'hadisupersecretkey', {
+    expiresIn: 60 * 60 * 24 * 7,
   });
-});
+  res.json({ data: { token, success: true } });
+};
 
-export default withDb(router);
+export default withDb(handler);

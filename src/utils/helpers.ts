@@ -2,18 +2,16 @@ import axios from 'axios';
 import { axios as encancedAxios } from './api';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
-import { Db } from './withDb';
+import withDb, { DbData, DbObject } from './withDb';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
 export function getDefinition(word: string | string[]) {
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&hl=en-US&dt=t&dt=bd&dj=1&q=${word}`;
   return axios
     .get(url)
     .then(({ data }: { data: any }) => data.sentences[0].trans);
 }
-// export function errorMaker(message: string, code = 500) {
-//   const err = new Error(message)
-//   err. = code;
-//   return err
-// }
+
 export type Token = { _id: string; exp: number; iat: number };
 export const getToken = () => Cookies.get('auth');
 export const clearToken = () => {
@@ -66,5 +64,6 @@ export const EnNumber = function (num: string): string {
     .join('');
 };
 
-export const ID = (entity: keyof Db): string =>
+export const ID = (entity: keyof DbData): string =>
   `$$${entity.toUpperCase()}$$${Date.now()}`;
+

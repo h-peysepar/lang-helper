@@ -1,12 +1,13 @@
 /* This is a database connection function*/
 import type { NextApiRequest, NextApiResponse } from 'next';
 // Remember to set type: module in package.json or use .mjs extension
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join, resolve } from 'path';
+
 
 import { Low } from 'lowdb';
 // @ts-ignore
 import { JSONFile } from 'lowdb/node';
+import { WordType } from '../models/word';
 
 //##todo: refactor interfaces.
 interface User {
@@ -16,14 +17,15 @@ interface User {
   countof_correct_answers_to_pass_word: number;
   id: string;
 }
+
+
 export interface DbData {
   users: User[];
-  posts: [];
+  words: WordType[];
   quizes: [];
 }
 export type DbObject = Low<DbData>;
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const file = join(__dirname, 'db.json');
+const file = join(resolve('./'), 'db.json');
 
 export async function connectDb(props?: {
   onSuccess?: Function;
@@ -35,7 +37,7 @@ export async function connectDb(props?: {
   try {
     await db.read();
     if (db.data === null) {
-      db.data = { posts: [], users: [], quizes: [] };
+      db.data = { words: [], users: [], quizes: [] };
       await db.write();
     }
     onSuccess?.();
@@ -45,8 +47,9 @@ export async function connectDb(props?: {
     return db;
   }
 }
-
-export default function withDb(func: Function) {
+type ApiHandler = (req: NextApiRequest,  res: NextApiResponse) => void
+type RESTAPIHandler = (req: NextApiRequest,  res: NextApiResponse, db: DbObject) => void
+export default function withDb(func: RESTAPIHandler) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
     const db: Low<DbData> = await connectDb({
       onError: (error: Error) =>
@@ -58,3 +61,15 @@ export default function withDb(func: Function) {
     func(req, res, db);
   };
 }
+// type ApiHandler = (req: NextApiRequest, res: NextApiResponse, db: DbObject) => 
+export const routeHandler = function (handlers: {
+  GET?: RESTAPIHandler;
+  POST?: RESTAPIHandler;
+  PATCH?: RESTAPIHandler;
+  DELETE?: RESTAPIHandler;
+}) {
+  return withDb(function(req, res, db){
+    // @ts-ignore
+    handlers[req.method?.toUpperCase() || 'GET']?.(req, res, db);
+  })
+};
