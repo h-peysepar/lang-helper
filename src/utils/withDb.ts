@@ -8,19 +8,10 @@ import { Low } from 'lowdb';
 // @ts-ignore
 import { JSONFile } from 'lowdb/node';
 import { WordType } from '../models/word';
-
-//##todo: refactor interfaces.
-interface User {
-  username: string;
-  password: string;
-  quiz_per_day: number;
-  countof_correct_answers_to_pass_word: number;
-  id: string;
-}
-
+import { UserType } from '../models/user';
 
 export interface DbData {
-  users: User[];
+  users: UserType[];
   words: WordType[];
   quizes: [];
 }

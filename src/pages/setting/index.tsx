@@ -11,7 +11,7 @@ import { logOut } from '../../utils/helpers';
 export interface SettingProps {}
 interface TSetting {
   quiz_per_day: number;
-  countof_correct_answers_to_pass_word: number;
+  correct_answers_capacity: number;
 }
 export default function Setting(props: SettingProps) {
   const { handleSubmit, register, reset } = useForm<TSetting>();
@@ -45,7 +45,7 @@ export default function Setting(props: SettingProps) {
         <Label className='text-xs'>Correct Answers To Pass A Word</Label>
         <Input
           className='general-input'
-          {...register('countof_correct_answers_to_pass_word', {
+          {...register('correct_answers_capacity', {
             setValueAs: i => +i,
           })}
         />

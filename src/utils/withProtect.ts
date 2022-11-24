@@ -6,7 +6,6 @@ const withProtect = function (handler: Function) {
     try {
       const token = req.cookies.auth;
       const x = jwt.verify(token, 'hadisupersecretkey');
-      console.log('!@#', x)
       handler(req, res);
     } catch (error) {
       res.status(401).json({ error });

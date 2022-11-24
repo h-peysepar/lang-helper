@@ -1,5 +1,6 @@
 import { Low } from 'lowdb/lib';
 import { NextApiRequest, NextApiResponse } from 'next';
+import User from '../../../../models/user';
 import { ID } from '../../../../utils/helpers';
 import withDb, { DbObject } from '../../../../utils/withDb';
 
@@ -17,13 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, db: DbObject) 
     if (user) {
       res.status(409).send('This username already exist!');
     }
-    const newUser = {
-      username,
-      password,
-      quiz_per_day: 1,
-      countof_correct_answers_to_pass_word: 12,
-      id: ID('users'),
-    }
+    const newUser = new User(username, password)
     users?.push(newUser);
     await db.write();
     res.json({ success: true, data: newUser });
