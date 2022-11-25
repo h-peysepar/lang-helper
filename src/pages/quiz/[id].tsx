@@ -6,27 +6,18 @@ import Loading from '../../components/Loading';
 import RotatableCard from '../../components/RotatableCard';
 import Styled from '../../components/Styled';
 import useQuery from '../../hooks/useQuery';
+import { QuizWord } from '../../models/quiz';
 import { axios } from '../../utils/api';
 import { fetcher } from '../../utils/helpers';
 
-interface Props {}
-interface Word {
-  word: {
-    word: string;
-    definition: string;
-    _id: string;
-  };
-  answer: boolean;
-}
 interface Response {
-  words: Word[];
+  words: QuizWord[];
 }
 interface TPayload {
   word_id: string;
-  answer: boolean;
+  answer: boolean | null;
 }
-function Quiz(props: Props) {
-  const {} = props;
+function Quiz() {
   const {
     query: { id: quizId },
   } = useRouter();
@@ -44,7 +35,7 @@ function Quiz(props: Props) {
     answer: initAnswer,
   }: {
     id: string;
-    answer: boolean;
+    answer: boolean | null;
   }) => {
     const [answer, setAnswer] = useState<boolean | null>(initAnswer);
     const { mutate, isLoading: answerLoading } = useMutation<{}, {}, TPayload>(
@@ -87,14 +78,12 @@ function Quiz(props: Props) {
   };
   return (
     <div className='max-h-full overflow-y-auto'>
-      {data?.words?.map(({ word, answer }) => (
+      {data?.words?.map(({ word, definition, answer, id}) => (
         <RotatableCard
-          key={word._id}
-          ActionComponent={() => (
-            <ActionComponent id={word._id} {...{ answer }} />
-          )}
-          word={word.word}
-          definition={word.definition}
+          key={word}
+          ActionComponent={() => <ActionComponent {...{ answer, id }} />}
+          word={word}
+          definition={definition}
         />
       ))}
     </div>

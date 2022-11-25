@@ -1,30 +1,27 @@
-import mongoose from 'mongoose';
-import { model, Schema, Types } from 'mongoose';
-interface QuizWord {
-  word: Types.ObjectId;
-  answer: boolean;
+import { ID } from '../utils/helpers';
+import { WordType } from './word';
+export interface QuizWord extends WordType {
+  answer: boolean | null;
 }
-export interface QuizInterface {
-  user_id: Types.ObjectId;
-  date: Date;
+export interface QuizType {
+  user_id: string;
+  date: string;
   is_done: boolean;
   auto_generated: boolean;
   words: QuizWord[];
+  id: string;
 }
 
-const quizSchema = new Schema({
-  user_id: { ref: 'user', type: Types.ObjectId },
-  date: Date,
-  is_done: { type: Boolean, default: false },
-  auto_generated: { type: Boolean, default: false },
-  words: [
-    {
-      word: { type: Types.ObjectId, ref: 'words' },
-      answer: { type: Boolean, default: null },
-    },
-  ],
-});
-
-const Quiz = mongoose.models.quiz || model<QuizInterface>('quiz', quizSchema);
-
+class Quiz implements QuizType {
+  is_done: boolean;
+  date: string;
+  auto_generated: boolean;
+  id: string;
+  constructor(public user_id: string, public words: QuizWord[]) {
+    this.is_done = false;
+    this.date = new Date().toISOString().slice(0, 10);
+    this.auto_generated = false;
+    this.id = ID('quizes');
+  }
+}
 export default Quiz;

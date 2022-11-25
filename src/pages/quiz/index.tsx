@@ -11,11 +11,9 @@ import PieChart from '../../components/PieChart';
 import Loading from '../../components/Loading';
 import NoRecord from '../../components/NoRecord';
 import useQuery from '../../hooks/useQuery';
+import { QuizType } from '../../models/quiz';
 export interface QuizProps {}
-interface TQuiz {
-  _id: string;
-  date: Date;
-  is_done: boolean;
+interface TQuiz extends QuizType {
   statistics: [number, number];
 }
 export default function QuizList(props: QuizProps) {
@@ -38,7 +36,7 @@ export default function QuizList(props: QuizProps) {
       return <NoRecord />;
     }
     return quizList?.map(quiz => (
-      <Card key={quiz._id} onClick={() => router.push(`/quiz/${quiz._id}`)}>
+      <Card key={quiz.id} onClick={() => router.push(`/quiz/${quiz.id}`)}>
         <span>
           {EnNumber(
             new Date(quiz?.date).toLocaleDateString('fa-ir').slice(0, 10)
@@ -60,7 +58,9 @@ export default function QuizList(props: QuizProps) {
       >
         Generate Quiz
       </Button>
-      <div className='text-gray-50 opacity-40 mx-4 my-3'>{error?.response?.data?.errorMessage}</div>
+      <div className='text-gray-50 opacity-40 mx-4 my-3'>
+        {error?.response?.data?.errorMessage}
+      </div>
       {renderList()}
     </div>
   );

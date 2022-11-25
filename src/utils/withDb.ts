@@ -3,17 +3,17 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 // Remember to set type: module in package.json or use .mjs extension
 import { join, resolve } from 'path';
 
-
 import { Low } from 'lowdb';
 // @ts-ignore
 import { JSONFile } from 'lowdb/node';
 import { WordType } from '../models/word';
 import { UserType } from '../models/user';
+import { QuizType } from '../models/quiz';
 
 export interface DbData {
   users: UserType[];
   words: WordType[];
-  quizes: [];
+  quizes: QuizType[];
 }
 export type DbObject = Low<DbData>;
 const file = join(resolve('./'), 'db.json');
@@ -38,8 +38,12 @@ export async function connectDb(props?: {
     return db;
   }
 }
-type ApiHandler = (req: NextApiRequest,  res: NextApiResponse) => void
-type RESTAPIHandler = (req: NextApiRequest,  res: NextApiResponse, db: DbObject) => void
+type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void;
+type RESTAPIHandler = (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  db: DbObject
+) => void;
 export default function withDb(func: RESTAPIHandler) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
     const db: Low<DbData> = await connectDb({
@@ -52,15 +56,15 @@ export default function withDb(func: RESTAPIHandler) {
     func(req, res, db);
   };
 }
-// type ApiHandler = (req: NextApiRequest, res: NextApiResponse, db: DbObject) => 
+// type ApiHandler = (req: NextApiRequest, res: NextApiResponse, db: DbObject) =>
 export const routeHandler = function (handlers: {
   GET?: RESTAPIHandler;
   POST?: RESTAPIHandler;
   PATCH?: RESTAPIHandler;
   DELETE?: RESTAPIHandler;
 }) {
-  return withDb(function(req, res, db){
+  return withDb(function (req, res, db) {
     // @ts-ignore
     handlers[req.method?.toUpperCase() || 'GET']?.(req, res, db);
-  })
+  });
 };

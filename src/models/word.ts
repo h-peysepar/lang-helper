@@ -1,6 +1,6 @@
 // import mongoose, { model, Schema, Types } from 'mongoose';
 
-import { getDefinition } from '../utils/helpers';
+import { getDefinition, ID } from '../utils/helpers';
 
 // const wordSchema = new Schema({
 //      word: String,
@@ -18,6 +18,7 @@ export interface WordType {
   countOfWrongAnswers: number;
   createdDate: number;
   user_id: string;
+  id: string;
 }
 
 class Word implements WordType {
@@ -27,7 +28,8 @@ class Word implements WordType {
     public definition: string | undefined,
     public countOfRightAnswers: number = 0,
     public countOfWrongAnswers: number = 0,
-    public createdDate: number = Date.now()
+    public createdDate: number = Date.now(),
+    public id: string = ID('words')
   ) {}
   private async getDefinition() {
     this.definition = await getDefinition(this.word);
