@@ -13,8 +13,14 @@ export function getDefinition(word: string | string[]) {
 //   err. = code;
 //   return err
 // }
-export type Token = {_id: string, exp: number, iat: number}
-export const getToken = () => Cookies.get('auth');
+export type Token = { _id: string; exp: number; iat: number };
+export const getToken = (): string => {
+  if ('localStorage' in window) {
+    // console.log('==>>>> ', localStorage.getItem('toekn'))
+    return localStorage.getItem('token') as string;
+  }
+  return '';
+};
 export const clearToken = () => {
   Cookies.remove('auth');
   Cookies.remove('user_id');

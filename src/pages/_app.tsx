@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         const decoded: Token = jwt(token)
         isExpired = decoded.exp * 1000 < Date.now()
       }
+      console.log('here', hasToken, isExpired)
       if (!hasToken || isExpired) {
         clearToken();
         router.replace('/sign-in');
